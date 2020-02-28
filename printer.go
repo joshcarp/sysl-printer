@@ -43,7 +43,7 @@ func (p *Printer) PrintApplication(a *sysl.Application) {
 	}
 }
 
-// PrintTypeDecl prints Type declerations:
+// PrintTypeDecl prints Type decelerations:
 // !type Foo:
 //     this <: string
 func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
@@ -127,8 +127,11 @@ func (p *Printer) ParamType(param *sysl.Param) string {
 	if param.Type == nil {
 		return ""
 	}
-	if param.Type.GetTypeRef() == nil {
-		return ""
+	// Ref.Appname.Part is the type name if the type is in the same package and the application name of where it's st
+	// stored if its in another application and then Ref.Path is the type name
+	if a := param.Type.GetTypeRef(); a != nil {
+		ans := append(a.Ref.Appname.Part, a.Ref.Path...)
+		return strings.Join(ans, ".")
 	}
 	return strings.Join(param.Type.GetTypeRef().Ref.Appname.Part, "")
 }
