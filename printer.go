@@ -47,16 +47,29 @@ func (p *Printer) PrintApplication(a *sysl.Application) {
 // !type Foo:
 //     this <: string
 func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
-	fmt.Fprintf(p.Writer, "    !type %s:\n", key)
-	if tuple := t.GetTuple(); tuple != nil {
-		for _, key := range alphabeticalTypes(tuple.AttrDefs) {
-			typeClass, typeIdent := syslutil.GetTypeDetail(tuple.AttrDefs[key])
-			if typeClass == "primitive" {
-				typeIdent = strings.ToLower(typeIdent)
+	switch t.Type.(type) {
+	case *sysl.Type_Enum_:
+		fmt.Fprintf(p.Writer, "    // enum is not currently implemented in sysl")
+		fmt.Fprintf(p.Writer, "    !type %s: ...\n", key)
+
+		fmt.Fprintf(p.Writer, "    // !enum %s:\n", key)
+		for key, val := range t.Type.(*sysl.Type_Enum_).Enum.Items {
+			fmt.Fprintf(p.Writer, "    %s = %d", key, val)
+		}
+
+	default:
+		fmt.Fprintf(p.Writer, "    !type %s:\n", key)
+		if tuple := t.GetTuple(); tuple != nil {
+			for _, key := range alphabeticalTypes(tuple.AttrDefs) {
+				typeClass, typeIdent := syslutil.GetTypeDetail(tuple.AttrDefs[key])
+				if typeClass == "primitive" {
+					typeIdent = strings.ToLower(typeIdent)
+				}
+				fmt.Fprintf(p.Writer, "        %s <: %s\n", key, typeIdent)
 			}
-			fmt.Fprintf(p.Writer, "        %s <: %s\n", key, typeIdent)
 		}
 	}
+
 }
 
 // PrintEndpoint prints endpoints:
