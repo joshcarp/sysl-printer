@@ -49,7 +49,7 @@ func (p *Printer) PrintApplication(a *sysl.Application) {
 func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 	switch t.Type.(type) {
 	case *sysl.Type_Enum_:
-		fmt.Fprintf(p.Writer, "    // enum is not currently implemented in sysl")
+		fmt.Fprintf(p.Writer, "    // enum is not currently implemented in sysl\n")
 		fmt.Fprintf(p.Writer, "    !type %s: ...\n", key)
 
 		fmt.Fprintf(p.Writer, "    // !enum %s:\n", key)
