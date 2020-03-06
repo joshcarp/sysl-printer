@@ -53,8 +53,9 @@ func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 		fmt.Fprintf(p.Writer, "    !type %s:\n        ...\n", key)
 
 		fmt.Fprintf(p.Writer, "    # !enum %s:\n", key)
-		for key, val := range t.Type.(*sysl.Type_Enum_).Enum.Items {
-			fmt.Fprintf(p.Writer, "    # %s = %d\n", key, val)
+		enumFields := t.Type.(*sysl.Type_Enum_).Enum.Items
+		for _, key := range alphabeticalInts(enumFields) {
+			fmt.Fprintf(p.Writer, "    # %s = %d\n", key, enumFields[key])
 		}
 
 	default:
