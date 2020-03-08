@@ -31,7 +31,7 @@ func (p *Printer) PrintModule(mod *sysl.Module) {
 // PrintApplication prints applications:
 // App:
 func (p *Printer) PrintApplication(a *sysl.Application) {
-	fmt.Fprintf(p.Writer, "%s:\n", strings.Join(a.Name.GetPart(), ""))
+	fmt.Fprintf(p.Writer, "\n%s:\n", strings.Join(a.Name.GetPart(), ""))
 	for _, key := range alphabeticalAttributes(a.Attrs) {
 		p.PrintAttrs(key, a.Attrs[key])
 	}
