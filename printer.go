@@ -81,6 +81,9 @@ func (p *Printer) PrintEndpoint(e *sysl.Endpoint) {
 		p.PrintParam(e.Param)
 	}
 	fmt.Fprintf(p.Writer, ":\n")
+	if len(e.Stmt) == 0{
+		fmt.Fprint(p.Writer, "        ...\n")
+	}
 	for _, stmnt := range e.Stmt {
 		p.PrintStatement(stmnt)
 	}
