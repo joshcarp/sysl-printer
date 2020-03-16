@@ -49,12 +49,10 @@ func (p *Printer) PrintApplication(a *sysl.Application) {
 func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 	switch t.Type.(type) {
 	case *sysl.Type_Enum_:
-		fmt.Fprintf(p.Writer, "    !type %s:\n        ...\n", key)
-		fmt.Fprintf(p.Writer, "    # enum is not currently implemented in sysl\n")
-		fmt.Fprintf(p.Writer, "    # !enum %s:\n", key)
+		fmt.Fprintf(p.Writer, "    !enum %s:\n", key)
 		enumFields := t.Type.(*sysl.Type_Enum_).Enum.Items
 		for _, key := range alphabeticalInts(enumFields) {
-			fmt.Fprintf(p.Writer, "    # %s = %d\n", key, enumFields[key])
+			fmt.Fprintf(p.Writer, "        %s: %d\n", key, enumFields[key])
 		}
 
 	default:
@@ -81,7 +79,7 @@ func (p *Printer) PrintEndpoint(e *sysl.Endpoint) {
 		p.PrintParam(e.Param)
 	}
 	fmt.Fprintf(p.Writer, ":\n")
-	if len(e.Stmt) == 0{
+	if len(e.Stmt) == 0 {
 		fmt.Fprint(p.Writer, "        ...\n")
 	}
 	for _, stmnt := range e.Stmt {

@@ -1,10 +1,16 @@
+
 APIGateway:
     @owner="client"
+    !enum Code:
+        invalid: 2
+        success: 1
+        tooManyAttempts: 3
     !type LoginResponse:
-        message <: string
+        message <: Code
     Login:
         Server <- Login
         return ret <: APIGateway.LoginResponse
+
 DB:
     @owner="server"
     Query:
@@ -12,6 +18,7 @@ DB:
         return ret <: data
     Save:
         ...
+
 DBAAA:
     @owner="server"
     Query:
@@ -19,14 +26,17 @@ DBAAA:
         return ret <: data
     Save:
         ...
+
 MobileApp:
     @owner="client"
     Login:
         APIGateway <- Login
+
 Project:
     @seqtitle="Diagram"
     Seq:
         MobileApp <- Login
+
 Server:
     @owner="server"
     !type LoginData:
