@@ -1,0 +1,415 @@
+{
+ "apps": {
+  "APIGateway": {
+   "name": {
+    "part": [
+     "APIGateway"
+    ]
+   },
+   "attrs": {
+    "owner": {
+     "s": "client"
+    }
+   },
+   "endpoints": {
+    "Login": {
+     "name": "Login",
+     "stmt": [
+      {
+       "call": {
+        "target": {
+         "part": [
+          "Server"
+         ]
+        },
+        "endpoint": "Login"
+       }
+      },
+      {
+       "ret": {
+        "payload": "ret \u003c: APIGateway.LoginResponse"
+       }
+      }
+     ],
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 6,
+       "col": 4
+      }
+     }
+    }
+   },
+   "types": {
+    "LoginResponse": {
+     "tuple": {
+      "attrDefs": {
+       "message": {
+        "primitive": "STRING",
+        "constraint": [
+        ],
+        "sourceContext": {
+         "start": {
+          "line": 5
+         }
+        }
+       }
+      }
+     },
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 4,
+       "col": 4
+      }
+     }
+    }
+   },
+   "sourceContext": {
+    "file": "/tests/printer.sysl",
+    "start": {
+     "line": 2,
+     "col": 1
+    }
+   }
+  },
+  "DB": {
+   "name": {
+    "part": [
+     "DB"
+    ]
+   },
+   "attrs": {
+    "owner": {
+     "s": "server"
+    }
+   },
+   "endpoints": {
+    "Query": {
+     "name": "Query",
+     "stmt": [
+      {
+       "action": {
+        "action": "lookup data"
+       }
+      },
+      {
+       "ret": {
+        "payload": "ret \u003c: data"
+       }
+      }
+     ],
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 12,
+       "col": 4
+      }
+     }
+    },
+    "Save": {
+     "name": "Save",
+     "stmt": [
+      {
+       "action": {
+        "action": "..."
+       }
+      }
+     ],
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 15,
+       "col": 4
+      }
+     }
+    }
+   },
+   "sourceContext": {
+    "file": "/tests/printer.sysl",
+    "start": {
+     "line": 10,
+     "col": 1
+    }
+   }
+  },
+  "DBAAA": {
+   "name": {
+    "part": [
+     "DBAAA"
+    ]
+   },
+   "attrs": {
+    "owner": {
+     "s": "server"
+    }
+   },
+   "endpoints": {
+    "Query": {
+     "name": "Query",
+     "stmt": [
+      {
+       "action": {
+        "action": "lookup data"
+       }
+      },
+      {
+       "ret": {
+        "payload": "ret \u003c: data"
+       }
+      }
+     ],
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 20,
+       "col": 4
+      }
+     }
+    },
+    "Save": {
+     "name": "Save",
+     "stmt": [
+      {
+       "action": {
+        "action": "..."
+       }
+      }
+     ],
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 23,
+       "col": 4
+      }
+     }
+    }
+   },
+   "sourceContext": {
+    "file": "/tests/printer.sysl",
+    "start": {
+     "line": 18,
+     "col": 1
+    }
+   }
+  },
+  "MobileApp": {
+   "name": {
+    "part": [
+     "MobileApp"
+    ]
+   },
+   "attrs": {
+    "owner": {
+     "s": "client"
+    }
+   },
+   "endpoints": {
+    "Login": {
+     "name": "Login",
+     "stmt": [
+      {
+       "call": {
+        "target": {
+         "part": [
+          "APIGateway"
+         ]
+        },
+        "endpoint": "Login"
+       }
+      }
+     ],
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 28,
+       "col": 4
+      }
+     }
+    }
+   },
+   "sourceContext": {
+    "file": "/tests/printer.sysl",
+    "start": {
+     "line": 26,
+     "col": 1
+    }
+   }
+  },
+  "Project": {
+   "name": {
+    "part": [
+     "Project"
+    ]
+   },
+   "attrs": {
+    "seqtitle": {
+     "s": "Diagram"
+    }
+   },
+   "endpoints": {
+    "Seq": {
+     "name": "Seq",
+     "stmt": [
+      {
+       "call": {
+        "target": {
+         "part": [
+          "MobileApp"
+         ]
+        },
+        "endpoint": "Login"
+       }
+      }
+     ],
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 33,
+       "col": 4
+      }
+     }
+    }
+   },
+   "sourceContext": {
+    "file": "/tests/printer.sysl",
+    "start": {
+     "line": 31,
+     "col": 1
+    }
+   }
+  },
+  "Server": {
+   "name": {
+    "part": [
+     "Server"
+    ]
+   },
+   "attrs": {
+    "owner": {
+     "s": "server"
+    }
+   },
+   "endpoints": {
+    "Login": {
+     "name": "Login",
+     "param": [
+      {
+       "name": "data",
+       "type": {
+        "typeRef": {
+         "ref": {
+          "appname": {
+           "part": [
+            "LoginData"
+           ]
+          }
+         }
+        }
+       }
+      }
+     ],
+     "stmt": [
+      {
+       "action": {
+        "action": "build query"
+       }
+      },
+      {
+       "call": {
+        "target": {
+         "part": [
+          "DB"
+         ]
+        },
+        "endpoint": "Query"
+       }
+      },
+      {
+       "action": {
+        "action": "check result"
+       }
+      },
+      {
+       "ret": {
+        "payload": "ret \u003c: Server.LoginResponse"
+       }
+      }
+     ],
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 43,
+       "col": 4
+      }
+     }
+    }
+   },
+   "types": {
+    "LoginData": {
+     "tuple": {
+      "attrDefs": {
+       "password": {
+        "primitive": "STRING",
+        "constraint": [
+        ],
+        "sourceContext": {
+         "start": {
+          "line": 39
+         }
+        }
+       },
+       "username": {
+        "primitive": "STRING",
+        "constraint": [
+        ],
+        "sourceContext": {
+         "start": {
+          "line": 40
+         }
+        }
+       }
+      }
+     },
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 38,
+       "col": 4
+      }
+     }
+    },
+    "LoginResponse": {
+     "tuple": {
+      "attrDefs": {
+       "message": {
+        "primitive": "STRING",
+        "constraint": [
+        ],
+        "sourceContext": {
+         "start": {
+          "line": 42
+         }
+        }
+       }
+      }
+     },
+     "sourceContext": {
+      "file": "/tests/printer.sysl",
+      "start": {
+       "line": 41,
+       "col": 4
+      }
+     }
+    }
+   },
+   "sourceContext": {
+    "file": "/tests/printer.sysl",
+    "start": {
+     "line": 36,
+     "col": 1
+    }
+   }
+  }
+ }
+}

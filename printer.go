@@ -58,6 +58,9 @@ func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 	default:
 		fmt.Fprintf(p.Writer, "    !type %s:\n", key)
 		if tuple := t.GetTuple(); tuple != nil {
+			if len(tuple.AttrDefs) == 0{
+				fmt.Fprintf(p.Writer, "        ...\n")
+			}
 			for _, key := range alphabeticalTypes(tuple.AttrDefs) {
 				typeClass, typeIdent := syslutil.GetTypeDetail(tuple.AttrDefs[key])
 				if typeClass == "primitive" {
