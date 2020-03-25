@@ -1,5 +1,5 @@
 
-APIGateway:
+APIGateway[~this, ~that, ~foobar]:
     @owner="client"
     !enum Code:
         invalid: 2
@@ -29,7 +29,7 @@ DBAAA:
 
 MobileApp:
     @owner="client"
-    Login:
+    Login[~this, ~that, ~foobar]:
         APIGateway <- Login
 
 Project:
@@ -39,12 +39,12 @@ Project:
 
 Server:
     @owner="server"
-    !type LoginData:
+    !type LoginData[~this, ~that, ~foobar]:
         password <: string
         username <: string
     !type LoginResponse:
         message <: string
-    Login(data <: LoginData):
+    Login(data <: LoginData)[~this, ~that, ~foobar]:
         build query
         DB <- Query
         check result

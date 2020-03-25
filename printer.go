@@ -31,8 +31,13 @@ func (p *Printer) PrintModule(mod *sysl.Module) {
 // PrintApplication prints applications:
 // App:
 func (p *Printer) PrintApplication(a *sysl.Application) {
-	fmt.Fprintf(p.Writer, "\n%s:\n", strings.Join(a.Name.GetPart(), ""))
+	fmt.Fprintf(p.Writer, "\n%s", strings.Join(a.Name.GetPart(), ""))
+	p.PrintPatterns(a.GetAttrs())
+	fmt.Fprint(p.Writer, ":\n")
 	for _, key := range alphabeticalAttributes(a.Attrs) {
+		if key == "patterns"{
+			continue
+		}
 		p.PrintAttrs(key, a.Attrs[key])
 	}
 	for _, key := range alphabeticalTypes(a.Types) {
@@ -56,7 +61,10 @@ func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 		}
 
 	default:
-		fmt.Fprintf(p.Writer, "    !type %s:\n", key)
+		fmt.Fprintf(p.Writer, "    !type %s", key)
+		p.PrintPatterns(t.GetAttrs())
+		fmt.Fprint(p.Writer, ":\n")
+
 		tuple := t.GetTuple()
 		if tuple == nil || tuple.AttrDefs == nil || len(tuple.AttrDefs) == 0{
 			fmt.Fprintf(p.Writer, "        ...\n")
@@ -74,6 +82,38 @@ func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 
 }
 
+// Prints patterns in square brackets: [~foo, ~bar]
+func (p *Printer)PrintPatterns(attrs map[string]*sysl.Attribute){
+	if attrs == nil{
+		return
+	}
+	patterns:= GetPatterns(attrs)
+	if len(patterns)>0{
+		fmt.Fprint(p.Writer, "[")
+		for i, pattern := range patterns{
+			fmt.Fprintf(p.Writer, "~%s", pattern)
+			if i != len(patterns)-1{
+				fmt.Fprintf(p.Writer, ", ")
+			}
+		}
+		fmt.Fprint(p.Writer, "]")
+	}
+}
+
+func GetPatterns(attrs map[string]*sysl.Attribute)[]string{
+	var ret = []string{}
+	patterns, has := attrs["patterns"]
+	if has {
+		if x := patterns.GetA(); x != nil {
+			for _, y := range x.Elt {
+				ret = append(ret, y.GetS())
+			}
+		}
+	}
+	return ret
+}
+
+
 // PrintEndpoint prints endpoints:
 // Endpoint:
 func (p *Printer) PrintEndpoint(e *sysl.Endpoint) {
@@ -82,6 +122,7 @@ func (p *Printer) PrintEndpoint(e *sysl.Endpoint) {
 	if len(e.Param) != 0 {
 		p.PrintParam(e.Param)
 	}
+	p.PrintPatterns(e.Attrs)
 	fmt.Fprintf(p.Writer, ":\n")
 	if len(e.Stmt) == 0 {
 		fmt.Fprint(p.Writer, "        ...\n")
