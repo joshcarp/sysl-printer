@@ -14,7 +14,7 @@ import (
 const (
 	APPLICATIONINDENT = 4
 	ENDPOINTINDENT = 8
-
+	MAXLINE = 80
 )
 
 // Printer prints sysl data structures out to source code
@@ -191,13 +191,22 @@ func (p *Printer) PrintAction(a *sysl.Action) {
 func (p *Printer) PrintAttrs(key string, a *sysl.Attribute, indentNum int) {
 	multiLine := strings.Split(a.GetS(), "\n")
 	indent := strings.Repeat(" ", indentNum)
-	if len(multiLine)==1{
-		fmt.Fprintf(p.Writer, "%s@%s = \"%s\"\n", indent, key, multiLine[0])
-		return
+	if len(multiLine)==1 && len (multiLine[0]) < MAXLINE{
+			fmt.Fprintf(p.Writer, "%s@%s = \"%s\"\n", indent, key, multiLine[0])
+			return
+
 	}
-	fmt.Fprintf(p.Writer, "%s@%s =: \n", indent, key)
+
+	fmt.Fprintf(p.Writer, "%s@%s =:\n", indent, key)
 	for _, line := range multiLine{
-		fmt.Fprintf(p.Writer, "%s    | %s\n", indent, line)
+		for i := 0; i < len(line); i = i + MAXLINE{
+			endindex := i + MAXLINE
+			if lineLen := len(line); endindex >= lineLen {
+				endindex = lineLen
+			}
+			fmt.Fprintf(p.Writer, "%s    |%s\n", indent, line[i:endindex])
+
+		}
 	}
 }
 
