@@ -2,6 +2,7 @@ package printer
 
 import (
 	"bytes"
+	"fmt"
 	"testing"
 
 	"github.com/alecthomas/assert"
@@ -26,5 +27,8 @@ func TestPrinting(t *testing.T) {
 	var buf bytes.Buffer
 	pr := NewPrinter(&buf)
 	pr.PrintModule(module)
+	if buf.String() != string(fileBytes){
+		fmt.Println(buf.String())
+	}
 	assert.Equal(t, buf.String(), string(fileBytes))
 }

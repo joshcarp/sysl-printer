@@ -11,6 +11,12 @@ import (
 	"github.com/anz-bank/sysl/pkg/syslutil"
 )
 
+const (
+	APPLICATIONINDENT = 4
+	ENDPOINTINDENT = 8
+
+)
+
 // Printer prints sysl data structures out to source code
 type Printer struct {
 	io.Writer
@@ -38,7 +44,7 @@ func (p *Printer) PrintApplication(a *sysl.Application) {
 		if key == "patterns"{
 			continue
 		}
-		p.PrintAttrs(key, a.Attrs[key])
+		p.PrintAttrs(key, a.Attrs[key], APPLICATIONINDENT)
 	}
 	for _, key := range alphabeticalTypes(a.Types) {
 		p.PrintTypeDecl(key, a.Types[key])
@@ -127,6 +133,12 @@ func (p *Printer) PrintEndpoint(e *sysl.Endpoint) {
 	if len(e.Stmt) == 0 {
 		fmt.Fprint(p.Writer, "        ...\n")
 	}
+	for key, attr := range e.Attrs{
+		if key == "patterns"{
+			continue
+		}
+		p.PrintAttrs(key, attr, ENDPOINTINDENT)
+	}
 	for _, stmnt := range e.Stmt {
 		p.PrintStatement(stmnt)
 	}
@@ -176,8 +188,17 @@ func (p *Printer) PrintAction(a *sysl.Action) {
 
 // PrintAttrs prints Attributes:
 // @owner="server"
-func (p *Printer) PrintAttrs(key string, a *sysl.Attribute) {
-	fmt.Fprintf(p.Writer, "    @%s=\"%s\"\n", key, a.GetS())
+func (p *Printer) PrintAttrs(key string, a *sysl.Attribute, indentNum int) {
+	multiLine := strings.Split(a.GetS(), "\n")
+	indent := strings.Repeat(" ", indentNum)
+	if len(multiLine)==1{
+		fmt.Fprintf(p.Writer, "%s@%s = \"%s\"\n", indent, key, multiLine[0])
+		return
+	}
+	fmt.Fprintf(p.Writer, "%s@%s =: \n", indent, key)
+	for _, line := range multiLine{
+		fmt.Fprintf(p.Writer, "%s    | %s\n", indent, line)
+	}
 }
 
 // ParamType prints:

@@ -1,6 +1,6 @@
 
 APIGateway[~this, ~that, ~foobar]:
-    @owner="client"
+    @owner = "client"
     !enum Code:
         invalid: 2
         success: 1
@@ -12,7 +12,7 @@ APIGateway[~this, ~that, ~foobar]:
         return ret <: APIGateway.LoginResponse
 
 DB:
-    @owner="server"
+    @owner = "server"
     Query:
         lookup data
         return ret <: data
@@ -20,7 +20,7 @@ DB:
         ...
 
 DBAAA:
-    @owner="server"
+    @owner = "server"
     Query:
         lookup data
         return ret <: data
@@ -28,17 +28,19 @@ DBAAA:
         ...
 
 MobileApp:
-    @owner="client"
+    @owner = "client"
     Login[~this, ~that, ~foobar]:
         APIGateway <- Login
 
 Project:
-    @seqtitle="Diagram"
+    @description = "this is another one"
+    @seqtitle = "Diagram"
     Seq:
+        @description = "endpoint comment"
         MobileApp <- Login
 
 Server:
-    @owner="server"
+    @owner = "server"
     !type LoginData[~this, ~that, ~foobar]:
         password <: string
         username <: string
