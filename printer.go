@@ -78,8 +78,17 @@ func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 		}
 		for _, key := range alphabeticalTypes(tuple.AttrDefs) {
 			typeClass, typeIdent := syslutil.GetTypeDetail(tuple.AttrDefs[key])
-			if typeClass == "primitive" {
+			switch typeClass{
+			case "primitive":
 				typeIdent = strings.ToLower(typeIdent)
+			case "sequence":
+				if foo := tuple.AttrDefs[key].GetSequence(); foo != nil{
+					typeClass, typeIdent = syslutil.GetTypeDetail(foo)
+					if typeClass == "primitive"{
+						typeIdent = strings.ToLower(typeIdent)
+					}
+				}
+				typeIdent = "sequence of "+  typeIdent
 			}
 			fmt.Fprintf(p.Writer, "        %s <: %s\n", key, typeIdent)
 		}
