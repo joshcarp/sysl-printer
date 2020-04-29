@@ -44,6 +44,7 @@ Project:
 Server:
     @owner = "server"
     !type LoginData[~this, ~that, ~foobar]:
+        @description = "blah nah brah"
         password <: sequence of string
         username <: string
     !type LoginResponse:

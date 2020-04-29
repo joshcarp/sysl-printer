@@ -20,7 +20,7 @@ func main(){
 Server[~yay]:
     !type Foo:
         foo <: sequence of string
-	Endpoint(req <: Foo):
+    Endpoint(req <: Foo):
 		return ok <: Foo
 `))
 

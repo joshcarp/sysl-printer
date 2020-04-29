@@ -76,6 +76,11 @@ func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 			fmt.Fprintf(p.Writer, "        ...\n")
 			return
 		}
+		for _, key := range alphabeticalAttributes(t.GetAttrs()) {
+			if key != "patterns"{
+				p.PrintAttrs(key, t.GetAttrs()[key], ENDPOINTINDENT)
+			}
+		}
 		for _, key := range alphabeticalTypes(tuple.AttrDefs) {
 			typeClass, typeIdent := syslutil.GetTypeDetail(tuple.AttrDefs[key])
 			switch typeClass{
