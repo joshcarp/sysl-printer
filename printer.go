@@ -61,6 +61,11 @@ func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 	switch t.Type.(type) {
 	case *sysl.Type_Enum_:
 		fmt.Fprintf(p.Writer, "    !enum %s:\n", key)
+		for _, key := range alphabeticalAttributes(t.GetAttrs()) {
+			if key != "patterns"{
+				p.PrintAttrs(key, t.GetAttrs()[key], ENDPOINTINDENT)
+			}
+		}
 		enumFields := t.Type.(*sysl.Type_Enum_).Enum.Items
 		for _, key := range alphabeticalInts(enumFields) {
 			fmt.Fprintf(p.Writer, "        %s: %d\n", key, enumFields[key])
@@ -72,14 +77,14 @@ func (p *Printer) PrintTypeDecl(key string, t *sysl.Type) {
 		fmt.Fprint(p.Writer, ":\n")
 
 		tuple := t.GetTuple()
-		if tuple == nil || tuple.AttrDefs == nil || len(tuple.AttrDefs) == 0{
-			fmt.Fprintf(p.Writer, "        ...\n")
-			return
-		}
 		for _, key := range alphabeticalAttributes(t.GetAttrs()) {
 			if key != "patterns"{
 				p.PrintAttrs(key, t.GetAttrs()[key], ENDPOINTINDENT)
 			}
+		}
+		if tuple == nil || tuple.AttrDefs == nil || len(tuple.AttrDefs) == 0{
+			fmt.Fprintf(p.Writer, "        ...\n")
+			return
 		}
 		for _, key := range alphabeticalTypes(tuple.AttrDefs) {
 			typeClass, typeIdent := syslutil.GetTypeDetail(tuple.AttrDefs[key])
